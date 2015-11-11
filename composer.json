@@ -1,0 +1,27 @@
+{
+    "name": "dopesong/slim-whoops",
+    "type": "library",
+    "description": "Slim Framework 3 error handler built on top of the Whoops error handler",
+    "keywords": ["slim","framework","error", "handler", "whoops"],
+    "homepage": "https://github.com/dopesong/Slim-Whoops",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Justinas Rakasis",
+            "email": "info@probit.lt",
+            "homepage": "http://probit.lt"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "filp/whoops": "~1.1"
+    },
+    "require-dev": {
+        "psr/http-message": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SlimWhoops\\": "src"
+        }
+    }
+}
