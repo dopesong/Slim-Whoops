@@ -1,6 +1,6 @@
 <?php
 
-namespace SlimWhoops;
+namespace Dopesong\Slim\Error;
 
 use Whoops\Handler\XmlResponseHandler;
 use Whoops\Run as WhoopsRun;
@@ -21,7 +21,7 @@ use Exception;
  *
  * @package Slim\ErrorHandlers
  */
-class Error
+class Whoops
 {
     /**
      * @var

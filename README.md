@@ -16,7 +16,7 @@ composer require dopesong/slim-whoops
 ## Usage With Slim 3
 
 ```php
-use SlimWhoops\Error as WhoopsError;
+use Dopesong\Slim\Error\Whoops as WhoopsError;
 
 include "vendor/autoload.php";
 
