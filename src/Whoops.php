@@ -2,6 +2,7 @@
 
 namespace Dopesong\Slim\Error;
 
+use Whoops\Handler\HandlerInterface;
 use Whoops\Handler\XmlResponseHandler;
 use Whoops\Run as WhoopsRun;
 use Whoops\Handler\PrettyPageHandler;
@@ -29,6 +30,16 @@ class Whoops
     protected $displayErrorDetails;
 
     /**
+     * @var WhoopsRun
+     */
+    protected $whoops;
+
+    /**
+     * @var bool
+     */
+    protected $handlerPushed = false;
+
+    /**
      * Known handled content types
      *
      * @var array
@@ -48,6 +59,18 @@ class Whoops
     public function __construct($displayErrorDetails = false)
     {
         $this->displayErrorDetails = (bool)$displayErrorDetails;
+        $this->whoops = new WhoopsRun;
+    }
+
+    /**
+     * @param Callable|HandlerInterface $handler
+     *
+     * @throws \InvalidArgumentException  If argument is not callable or instance of HandlerInterface
+     */
+    public function pushHandler($handler)
+    {
+        $this->whoops->pushHandler($handler);
+        $this->handlerPushed = true;
     }
 
     /**
@@ -59,26 +82,14 @@ class Whoops
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, Exception $exception)
     {
-        $whoops = new WhoopsRun;
         $contentType = $this->determineContentType($request);
 
-        switch ($contentType) {
-            case 'application/json':
-                $whoops->pushHandler(new JsonResponseHandler());
-                break;
-            case 'text/xml':
-            case 'application/xml':
-                $whoops->pushHandler(new XmlResponseHandler());
-                break;
-            case 'text/html':
-                $whoops->pushHandler(new PrettyPageHandler());
-                break;
-        }
+        $this->pushHandlerByContentType($contentType);
 
         $output = null;
 
         if ($this->displayErrorDetails) {
-            $output = $whoops->handleException($exception);
+            $output = $this->whoops->handleException($exception);
         }
 
         $body = $response->getBody();
@@ -90,9 +101,29 @@ class Whoops
     }
 
     /**
+     * @param $contentType
+     */
+    protected function pushHandlerByContentType($contentType)
+    {
+        switch ($contentType) {
+            case 'application/json':
+                $this->whoops->pushHandler(new JsonResponseHandler());
+                break;
+            case 'text/xml':
+            case 'application/xml':
+                $this->whoops->pushHandler(new XmlResponseHandler());
+                break;
+            case 'text/html':
+                $this->whoops->pushHandler(new PrettyPageHandler());
+                break;
+        }
+    }
+
+    /**
      * Determine which content type we know about is wanted using Accept header
      *
      * @param ServerRequestInterface $request
+     *
      * @return string
      */
     private function determineContentType(ServerRequestInterface $request)
@@ -102,6 +133,7 @@ class Whoops
         if (count($selectedContentTypes)) {
             return reset($selectedContentTypes);
         }
+
         return 'text/html';
     }
 }
