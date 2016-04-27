@@ -10,8 +10,8 @@ composer require dopesong/slim-whoops
 ```
 
 ## Requirements
-- PHP >=5.5.0
-- Whoops ~1.1
+- PHP >=5.6.0
+- Whoops ^2.0
 
 ## Usage With Slim 3
 
