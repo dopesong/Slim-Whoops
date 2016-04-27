@@ -25,11 +25,6 @@ use Exception;
 class Whoops
 {
     /**
-     * @var
-     */
-    protected $displayErrorDetails;
-
-    /**
      * @var WhoopsRun
      */
     protected $whoops;
@@ -53,12 +48,9 @@ class Whoops
 
     /**
      * Constructor
-     *
-     * @param boolean $displayErrorDetails Set to true to display full details
      */
-    public function __construct($displayErrorDetails = false)
+    public function __construct()
     {
-        $this->displayErrorDetails = (bool)$displayErrorDetails;
         $this->whoops = new WhoopsRun;
     }
 
@@ -88,9 +80,7 @@ class Whoops
 
         $output = null;
 
-        if ($this->displayErrorDetails) {
-            $output = $this->whoops->handleException($exception);
-        }
+        $output = $this->whoops->handleException($exception);
 
         $body = $response->getBody();
         $body->write($output);
