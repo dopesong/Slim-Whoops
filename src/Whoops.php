@@ -10,7 +10,6 @@ use Whoops\Handler\JsonResponseHandler;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Exception;
 
 /**
  * Whoops Error Handler
@@ -68,11 +67,11 @@ class Whoops
     /**
      * @param ServerRequestInterface $request
      * @param ResponseInterface      $response
-     * @param Exception              $exception
+     * @param \Throwable              $throwable
      *
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, Exception $exception)
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $throwable)
     {
         $contentType = $this->determineContentType($request);
 
@@ -80,7 +79,7 @@ class Whoops
 
         $output = null;
 
-        $output = $this->whoops->handleException($exception);
+        $output = $this->whoops->handleException($throwable);
 
         $body = $response->getBody();
         $body->write($output);
