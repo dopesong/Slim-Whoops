@@ -29,3 +29,34 @@ $container['phpErrorHandler'] = $container['errorHandler'] = function($c) {
 
 $app->run();
 ```
+
+## Additional handlers
+ 
+Custom handlers can be added to execute additional tasks.
+For example, you might want to log the error like so:
+
+```php
+include "vendor/autoload.php";
+
+use Whoops\Handler\Handler;
+use Dopesong\Slim\Error\Whoops as WhoopsError;
+
+$app = new Slim\App();
+$container = $app->getContainer();
+
+$container['phpErrorHandler'] = $container['errorHandler'] = function ($container) {
+    $logger = $container['logger'];
+    $whoopsHandler = new WhoopsError();
+
+    $whoopsHandler->pushHandler(
+        function ($exception) use ($logger) {
+            /** @var \Exception $exception */
+            $logger->error($exception->getMessage(), ['exception' => $exception]);
+            return Handler::DONE;
+        }
+    );
+
+    return $whoopsHandler;
+};
+```
+
