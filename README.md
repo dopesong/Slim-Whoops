@@ -23,7 +23,7 @@ include "vendor/autoload.php";
 $app = new Slim\App();
 $container = $app->getContainer();
 
-$container['errorHandler'] = function($c) {
+$container['phpErrorHandler'] = $container['errorHandler'] = function($c) {
     return new WhoopsError($c->get('settings')['displayErrorDetails']);
 };
 
