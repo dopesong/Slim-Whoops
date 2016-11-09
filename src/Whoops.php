@@ -94,17 +94,35 @@ class Whoops
      */
     protected function pushHandlerByContentType($contentType)
     {
+        $contentTypeBasedHandler = null;
         switch ($contentType) {
             case 'application/json':
-                $this->whoops->pushHandler(new JsonResponseHandler());
+                $contentTypeBasedHandler = new JsonResponseHandler();
                 break;
             case 'text/xml':
             case 'application/xml':
-                $this->whoops->pushHandler(new XmlResponseHandler());
+                $contentTypeBasedHandler = new XmlResponseHandler();
                 break;
             case 'text/html':
-                $this->whoops->pushHandler(new PrettyPageHandler());
+                $contentTypeBasedHandler = new PrettyPageHandler();
                 break;
+            default:
+                return;
+        }
+
+        $this->prependHandler($contentTypeBasedHandler);
+    }
+
+    /**
+     * @param Callable|HandlerInterface $handler
+     */
+    private function prependHandler($handler)
+    {
+        $existingHandlers = array_merge([$handler], $this->whoops->getHandlers());
+        $this->whoops->clearHandlers();
+
+        foreach ($existingHandlers as $existingHandler) {
+            $this->whoops->pushHandler($existingHandler);
         }
     }
 
