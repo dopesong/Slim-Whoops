@@ -1,5 +1,10 @@
 # Slim Whoops
 
+[![Latest Stable Version](https://poser.pugx.org/dopesong/slim-whoops/v/stable)](https://packagist.org/packages/dopesong/slim-whoops)
+[![Total Downloads](https://poser.pugx.org/dopesong/slim-whoops/downloads)](https://packagist.org/packages/dopesong/slim-whoops)
+[![Latest Unstable Version](https://poser.pugx.org/dopesong/slim-whoops/v/unstable)](https://packagist.org/packages/dopesong/slim-whoops)
+[![License](https://poser.pugx.org/dopesong/slim-whoops/license)](https://packagist.org/packages/dopesong/slim-whoops)
+
 Slim Framework 3 error handler built on top of Whoops Error Handler
 
 ## Installing
