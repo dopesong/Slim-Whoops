@@ -23,6 +23,8 @@ use Psr\Http\Message\ResponseInterface;
  */
 class Whoops
 {
+    const DEFAULT_STATUS_CODE = 500;
+
     /**
      * @var WhoopsRun
      */
@@ -44,6 +46,11 @@ class Whoops
         'text/xml',
         'text/html',
     ];
+
+    /**
+     * @var bool Transmit exception code as response status code or not
+     */
+    protected $transmitExceptionCode = false;
 
     /**
      * Constructor
@@ -84,7 +91,9 @@ class Whoops
         $body = $response->getBody();
         $body->write($output);
 
-        return $response->withStatus(500)
+        $statusCode = $this->transmitExceptionCode === true ? $throwable->getCode() : self::DEFAULT_STATUS_CODE;
+
+        return $response->withStatus($statusCode)
             ->withHeader('Content-type', $contentType)
             ->withBody($body);
     }
@@ -142,5 +151,14 @@ class Whoops
         }
 
         return 'text/html';
+    }
+
+    /**
+     * @param boolean $ption
+     */
+    protected function setTransmitExceptionCode($ption)
+    {
+        $this->transmitExceptionCode = $ption;
+        return $this;
     }
 }
