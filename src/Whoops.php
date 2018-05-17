@@ -158,9 +158,9 @@ class Whoops
     /**
      * @param boolean $ption
      */
-    protected function setTransmitExceptionCode($ption)
+    protected function setTransmitExceptionCode($option)
     {
-        $this->transmitExceptionCode = $ption;
+        $this->transmitExceptionCode = $option;
         return $this;
     }
 }
