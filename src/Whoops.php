@@ -48,7 +48,9 @@ class Whoops
     ];
 
     /**
-     * @var bool Transmit exception code as response status code or not
+     * Transmit exception code as response status code or not
+     *
+     * @var bool
      */
     protected $transmitExceptionCode = false;
 
