@@ -29,14 +29,14 @@ $app = new Slim\App();
 $container = $app->getContainer();
 
 $container['phpErrorHandler'] = $container['errorHandler'] = function($c) {
-    return new WhoopsError($c->get('settings')['displayErrorDetails']);
+    return new WhoopsError();
 };
 
 $app->run();
 ```
 
 ## Additional handlers
- 
+
 Custom handlers can be added to execute additional tasks.
 For example, you might want to log the error like so:
 
